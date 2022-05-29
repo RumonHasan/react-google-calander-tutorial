@@ -11,6 +11,7 @@ import Day from './Day';
                             <Day
                                 day={day}
                                 key={idx}
+                                rowIndex={index}
                             />
                         )
                     })}

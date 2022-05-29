@@ -1,9 +1,17 @@
 module.exports = {
     content: [
-      "./src/**/*.{js,jsx,ts,tsx}",
+      "./src/**/*.{js,jsx,ts,tsx}"
     ],
+    darkMode:false,
     theme: {
-      extend: {},
+      extend: {
+        fontFamily:{
+          sans:["Open Sans"]
+        },
+        gridTemplateColumns:{
+          "1/5": "1fr 5fr"
+        }
+      },
     },
-    plugins: [],
+    plugins: [require("@tailwindcss/forms")],
   }
