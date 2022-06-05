@@ -16,7 +16,6 @@ const [currentMonth, setCurrentMonth] = useState(getMonth());
   const handleNextMonth = ()=>{
     setCurrentMonthIndex((currentMonth)=> currentMonth + 1);
   }
-
   // context
   const {monthIndex} = useContext(GlobalContext);
 

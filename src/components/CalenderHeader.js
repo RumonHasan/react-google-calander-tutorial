@@ -1,10 +1,21 @@
 import dayjs from 'dayjs';
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import logo from '../assets/logo.png';
 import { GlobalContext } from '../context/GlobalContext';
 
 const CalenderHeader = () => {
   const {monthIndex, setMonthIndex} = useContext(GlobalContext);
+  // mini text Animation
+  const text = ['C', 'a', 'l','e','n', 'd', 'e', 'r'];
+  const [displayText, setDisplayText] = useState([]);
+
+  useEffect(()=>{
+    const addAnimation = ()=>{
+      
+    }
+    addAnimation();
+  },[])
+
   const handlePrevMonth = ()=>{
     setMonthIndex((currentMonthIndex)=> currentMonthIndex - 1);
   }
@@ -18,7 +29,13 @@ const CalenderHeader = () => {
   return (
     <header className='px-4 py-2 flex items-center'>
       <img src={logo} alt='' className='mr-2 w-12 h-12'/>
-      <h1 className='mr-10 text-xl text-gray-500 font-bold'>Calender</h1>
+      <h1 className='mr-10 text-xl text-gray-500 flex font-bold'>{displayText.map((letter, index)=>{
+        return (
+          <div key={index}>
+            {letter}
+          </div>
+        )
+      })}</h1>
       <button className='border rounded py-2 px-4 mr-5' onClick={handleReset}>
          Today
       </button>
