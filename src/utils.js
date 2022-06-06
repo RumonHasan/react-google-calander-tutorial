@@ -3,7 +3,6 @@ import dayjs from "dayjs";
 // rendering the calender
 export const getMonth =( month = dayjs().month())=> {
     month = Math.floor(month);
-    console.log(month);
     const year = dayjs().year();
     const firstDayOfMonth = dayjs(new Date(year,month, 1)).day();
     let currentMonthCounter = 0 - firstDayOfMonth;

@@ -10,6 +10,7 @@ const [currentMonth, setCurrentMonth] = useState(getMonth());
     useEffect(()=>{
       setCurrentMonth(getMonth(currentMonthIndex));
     },[currentMonthIndex]);
+    
   const handlePrevMonth = ()=>{
     setCurrentMonthIndex((currentMonth)=> currentMonth - 1)
   }
@@ -17,7 +18,7 @@ const [currentMonth, setCurrentMonth] = useState(getMonth());
     setCurrentMonthIndex((currentMonth)=> currentMonth + 1);
   }
   // context
-  const {monthIndex} = useContext(GlobalContext);
+  const {monthIndex, setSmallCalenderMonth, setDaySelected, daySelected} = useContext(GlobalContext);
 
   useEffect(()=>{
     setCurrentMonthIndex(monthIndex);
@@ -28,9 +29,13 @@ const [currentMonth, setCurrentMonth] = useState(getMonth());
     const format = 'DD-MM-YY';
     const nowDay = dayjs().format(format);
     const currentDay = day.format(format);
-    // specifying class for the current day
+    const selectedDay = daySelected && daySelected.format(format);
+
+    // specifying class for the current day both for small and big calenders
     if(nowDay === currentDay){
-        return 'bg-blue-500 rounded-full text-white'
+        return 'bg-blue-500 rounded-full text-white';
+    }else if(selectedDay === currentDay){
+        return "bg-blue-100 rounded-full text-blue-600 font-bold"
     }else{
         return '';
     }
@@ -64,7 +69,10 @@ const [currentMonth, setCurrentMonth] = useState(getMonth());
                         <React.Fragment key={index}>
                             {row.map((day,idx)=>{
                                 return (
-                                    <button key={idx} className={`py-1 w-full ${getDayClass(day)}`}>
+                                    <button key={idx} onClick={()=>{
+                                        setSmallCalenderMonth(currentMonthIndex);
+                                        setDaySelected(day)
+                                    }} className={`py-1 w-full ${getDayClass(day)}`}>
                                         <span className='text-sm'>
                                             {day.format('D')}
                                         </span>
