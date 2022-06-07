@@ -1,7 +1,7 @@
 import React, { useContext, useState } from 'react';
 import { GlobalContext } from '../context/GlobalContext';
 
-const labelsClasses =["indigo", 'gray', 'green', 'blue', 'red', 'purple'];
+const labelsClasses =["indigo", "gray", 'green', 'blue', 'red', 'purple'];
 
 const EventModal = () => {
   const {setShowEventModal, daySelected} = useContext(GlobalContext);
@@ -58,9 +58,12 @@ const EventModal = () => {
                 </span>
                 <div className='flex gap-x-2'>
                     {labelsClasses.map((labelClass, index)=>{
+                        console.log(labelClass);
                         return (
                             <span key={index} className={`bg-${labelClass}-500 w-6 h-6 rounded-full flex items-center justify-center cursor-pointer`}>
-                                
+                                <span className='material-icons-outlined text-white text-sm'>
+                                    check
+                                </span>
                             </span>
                         )
                     })}
