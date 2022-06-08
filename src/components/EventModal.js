@@ -5,10 +5,10 @@ import { action } from '../context/ContextWrapper';
 const labelsClasses =['indigo', 'gray', 'green', 'blue', 'red', 'purple'];
 
 const EventModal = () => {
-  const {setShowEventModal, daySelected, dispatchCallEvent} = useContext(GlobalContext);
-  const [title, setTitle] = useState('');
-  const [description, setDescription] = useState([]);
-  const [selectedLabel, setSelectedLabel] = useState(labelsClasses[0]);// color label state
+  const {setShowEventModal, daySelected, dispatchCallEvent, selectedEvent} = useContext(GlobalContext);
+  const [title, setTitle] = useState(selectedEvent ? selectedEvent.title : '');
+  const [description, setDescription] = useState(selectedEvent ? selectedEvent.description : '');
+  const [selectedLabel, setSelectedLabel] = useState(selectedEvent ? labelsClasses.find((lbl)=> lbl === selectedEvent.label): labelsClasses[0]);// color label state
 
   // submitting the event to the local storage
   const handleSubmit = (e)=>{
@@ -19,9 +19,14 @@ const EventModal = () => {
         description,
         label: selectedLabel,
         day: daySelected.valueOf(), // valueOf is used in order to let the event be json stringified
-        id: Date.now()
+        id: selectedEvent ? selectedEvent.id : Date.now()
     }
-    dispatchCallEvent({type: action.PUSH, payload: calenderEvent});
+    // push the event to the local storage
+    if(selectedEvent){
+        dispatchCallEvent({type:action.UPDATE, payload: calenderEvent});
+    }else{
+        dispatchCallEvent({type: action.PUSH, payload: calenderEvent});
+    }
     setShowEventModal(false);
   }
 
@@ -32,11 +37,22 @@ const EventModal = () => {
                 <span className='material-icons-outlined text-gray-400'>
                     drag_handle
                 </span>
-                <button onClick={()=> setShowEventModal(false)}>
-                    <span className='material-icons-outlined text-gray-400'>
-                        close
-                    </span>
-                </button>
+                <div>
+                    {selectedEvent && 
+                        <button onClick={()=> {dispatchCallEvent({type:'delete', payload:selectedEvent})
+                            setShowEventModal(false)}
+                        }>
+                            <span className='material-icons-outlined text-gray-400'>
+                                delete
+                            </span>
+                        </button>
+                    }
+                    <button onClick={()=> setShowEventModal(false)}>
+                        <span className='material-icons-outlined text-gray-400'>
+                            close
+                        </span>
+                    </button>
+                </div>
             </header>
             <div className='p-3'>
                 <div className='grid grid-cols-1/5 items-end gap-y-7'>
@@ -75,7 +91,6 @@ const EventModal = () => {
                 </span>
                 <div className='flex gap-x-2'>
                     {labelsClasses.map((labelClass, index)=>{
-                        console.log(labelClass);
                         return (
                             <span onClick={()=>setSelectedLabel(labelClass)} key={index} className={`bg-${labelClass}-500 w-6 h-6 rounded-full flex items-center justify-center cursor-pointer`}>
                                 {selectedLabel === labelClass &&
